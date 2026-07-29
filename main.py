@@ -84,5 +84,3 @@ def run_bot():
                         print("Price not found")
 
 run_bot()
-
-# test git
