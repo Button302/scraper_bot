@@ -1,5 +1,8 @@
 {
-    "searched_items": [
-    ],
-    "errors": []
+    "is_running": true,
+    "time_for_loop": 60,
+    "loops": 1,
+    "items_searched": 0,
+    "items_found": 0,
+    "time_running": 60
 }

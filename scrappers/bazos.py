@@ -26,29 +26,49 @@ def parse_rss_listing(rss_title: str) -> dict:
         "condition": condition
     }
 
-def fetch_listings_bazos(search_term: str) -> list[dict]:
-    url = f"https://www.bazos.cz/rss.php?hlokalita=60200&humkreis=25&hledat={search_term}"
-    rss_feed = feedparser.parse(url)
-    listings = []
+def fetch_listings_bazos(search_term: str, mode: str) -> list[dict]:
+    if mode == "single":
+        url = f"https://www.bazos.cz/rss.php?hlokalita=60200&humkreis=25&hledat={search_term}"
+        rss_feed = feedparser.parse(url)
+        listings = []
 
-    for entry in rss_feed.entries:
-        title = entry.get("title", "")
-        link = entry.get("link", "")
-        description = entry.get("description", "")
-        
-        
-        data = parse_rss_listing(title)
-        data["link"] = link
-        data["description"] = description
-        data["source"] = "bazos"
-        listings.append(data)
-        
-    return listings
+        for entry in rss_feed.entries:
+            title = entry.get("title", "")
+            link = entry.get("link", "")
+            description = entry.get("description", "")
+            
+            
+            data = parse_rss_listing(title)
+            data["link"] = link
+            data["description"] = description
+            data["source"] = "bazos"
+            listings.append(data)
+            
+        return listings
+    elif mode == "category":
+        url = f"https://www.bazos.cz/rss.php?rub={search_term}&hlokalita=60200&humkreis=15"
+        rss_feed = feedparser.parse(url)
+        listings = []
+
+        for entry in rss_feed.entries:
+            title = entry.get("title", "")
+            link = entry.get("link", "")
+            description = entry.get("description", "")
+            
+            
+            data = parse_rss_listing(title)
+            data["link"] = link
+            data["description"] = description
+            data["source"] = "bazos"
+            listings.append(data)
+            
+        return listings
+    return []
 
 
 if __name__ == "__main__":
-    test_url = 'https://www.bazos.cz/rss.php?humkreis=25&hledat=rtx+4070'
-    results = fetch_listings_bazos(test_url)
+    test_url = "https://www.bazos.cz/rss.php?rub=pc"
+    results = fetch_listings_bazos(test_url, "single")
     
     for item in results:
         print(item)
